@@ -1,0 +1,18 @@
+service: catalogue
+provider:
+  name: aws
+  runtime: go1.x
+  timeout: 60
+package:
+  exclude:
+    - ./**
+  include:
+    - ./main
+functions:
+  catalogue:
+    handler: main
+    environment:
+      DSN: ${opt:dsn}
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
