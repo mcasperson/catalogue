@@ -41,7 +41,7 @@ jobs:
       - name: Unit Test
         run: ./test/test.sh unit.py
 
-      - name: Create ZIP file
+      - name: Compile app
         run: |
           CGO_ENABLED=0 GOOS=linux go build cmd/cataloguesvc/main.go
 
