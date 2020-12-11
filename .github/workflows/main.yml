@@ -38,9 +38,6 @@ jobs:
       - name: Install dependencies
         run: go get -u github.com/FiloSottile/gvt && ${GOPATH}/bin/gvt restore && go get -v github.com/mattn/goveralls
 
-      - name: Build
-        run: ./scripts/build.sh
-
       - name: Unit Test
         run: ./test/test.sh unit.py
 
