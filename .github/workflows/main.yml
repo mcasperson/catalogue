@@ -36,7 +36,13 @@ jobs:
           go-version: ${{ env.GO_VERSION }}
 
       - name: Install dependencies
-        run: go get -u github.com/FiloSottile/gvt && ${GOPATH}/bin/gvt restore && go get -v github.com/mattn/goveralls
+        run: |
+          go get -u github.com/FiloSottile/gvt
+          ${GOPATH}/bin/gvt restore
+          go get -v github.com/mattn/goveralls
+          go get -v github.com/aws/aws-lambda-go/events
+          go get -v github.com/aws/aws-lambda-go/lambda
+          go get -v github.com/awslabs/aws-lambda-go-api-proxy/httpadapter
 
       - name: Unit Test
         run: ./test/test.sh unit.py
