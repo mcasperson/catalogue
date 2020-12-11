@@ -8,6 +8,7 @@ package:
     - ./**
   include:
     - ./main
+    - ./images/*
 functions:
   catalogue:
     handler: main
