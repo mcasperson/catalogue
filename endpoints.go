@@ -9,6 +9,7 @@ import (
 	"github.com/go-kit/kit/tracing/opentracing"
 	stdopentracing "github.com/opentracing/opentracing-go"
 	"golang.org/x/net/context"
+	"os"
 )
 
 // Endpoints collects the endpoints that comprise the Service.
@@ -24,11 +25,11 @@ type Endpoints struct {
 // backed by the given service.
 func MakeEndpoints(s Service, tracer stdopentracing.Tracer) Endpoints {
 	return Endpoints{
-		ListEndpoint:   opentracing.TraceServer(tracer, "GET /catalogue")(MakeListEndpoint(s)),
-		CountEndpoint:  opentracing.TraceServer(tracer, "GET /catalogue/size")(MakeCountEndpoint(s)),
-		GetEndpoint:    opentracing.TraceServer(tracer, "GET /catalogue/{id}")(MakeGetEndpoint(s)),
-		TagsEndpoint:   opentracing.TraceServer(tracer, "GET /tags")(MakeTagsEndpoint(s)),
-		HealthEndpoint: opentracing.TraceServer(tracer, "GET /health")(MakeHealthEndpoint(s)),
+		ListEndpoint:   opentracing.TraceServer(tracer, "GET "+os.Getenv("BASE_URI")+"/catalogue")(MakeListEndpoint(s)),
+		CountEndpoint:  opentracing.TraceServer(tracer, "GET "+os.Getenv("BASE_URI")+"/catalogue/size")(MakeCountEndpoint(s)),
+		GetEndpoint:    opentracing.TraceServer(tracer, "GET "+os.Getenv("BASE_URI")+"/catalogue/{id}")(MakeGetEndpoint(s)),
+		TagsEndpoint:   opentracing.TraceServer(tracer, "GET "+os.Getenv("BASE_URI")+"/tags")(MakeTagsEndpoint(s)),
+		HealthEndpoint: opentracing.TraceServer(tracer, "GET "+os.Getenv("BASE_URI")+"/health")(MakeHealthEndpoint(s)),
 	}
 }
 

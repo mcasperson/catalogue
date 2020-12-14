@@ -2,3 +2,7 @@ __pycache__/
 coverage.out
 vendor
 .idea
+main
+node_modules
+.serverless
+package-lock.json
