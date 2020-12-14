@@ -36,7 +36,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 	// GET /tags            Tags
 	// GET /health		Health Check
 
-	r.Methods("GET").Path(os.Getenv("BASE_URI") + "/catalogue").Handler(httptransport.NewServer(
+	r.Methods("GET").Path("/catalogue").Handler(httptransport.NewServer(
 		ctx,
 		circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:    "List",
@@ -46,7 +46,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 		encodeListResponse,
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /catalogue", logger)))...,
 	))
-	r.Methods("GET").Path(os.Getenv("BASE_URI") + "/catalogue/size").Handler(httptransport.NewServer(
+	r.Methods("GET").Path("/catalogue/size").Handler(httptransport.NewServer(
 		ctx,
 		circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:    "Count",
@@ -56,7 +56,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 		encodeResponse,
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /catalogue/size", logger)))...,
 	))
-	r.Methods("GET").Path(os.Getenv("BASE_URI") + "/catalogue/{id}").Handler(httptransport.NewServer(
+	r.Methods("GET").Path("/catalogue/{id}").Handler(httptransport.NewServer(
 		ctx,
 		circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:    "Get",
@@ -66,7 +66,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 		encodeGetResponse, // special case, this one can have an error
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /catalogue/{id}", logger)))...,
 	))
-	r.Methods("GET").Path(os.Getenv("BASE_URI") + "/tags").Handler(httptransport.NewServer(
+	r.Methods("GET").Path("/tags").Handler(httptransport.NewServer(
 		ctx,
 		circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:    "Tags",
@@ -76,11 +76,11 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 		encodeResponse,
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /tags", logger)))...,
 	))
-	r.Methods("GET").PathPrefix(os.Getenv("BASE_URI") + "/catalogue/images/").Handler(http.StripPrefix(
+	r.Methods("GET").PathPrefix("/catalogue/images/").Handler(http.StripPrefix(
 		os.Getenv("BASE_URI")+"/catalogue/images/",
 		http.FileServer(http.Dir(imagePath)),
 	))
-	r.Methods("GET").PathPrefix(os.Getenv("BASE_URI") + "/health").Handler(httptransport.NewServer(
+	r.Methods("GET").PathPrefix("/health").Handler(httptransport.NewServer(
 		ctx,
 		circuitbreaker.Gobreaker(gobreaker.NewCircuitBreaker(gobreaker.Settings{
 			Name:    "Health",
