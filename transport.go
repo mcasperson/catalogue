@@ -77,7 +77,7 @@ func MakeHTTPHandler(ctx context.Context, e Endpoints, imagePath string, logger 
 		append(options, httptransport.ServerBefore(opentracing.FromHTTPRequest(tracer, "GET /tags", logger)))...,
 	))
 	r.Methods("GET").PathPrefix(os.Getenv("BASE_URI") + "/catalogue/images/").Handler(http.StripPrefix(
-		"/catalogue/images/",
+		os.Getenv("BASE_URI")+"/catalogue/images/",
 		http.FileServer(http.Dir(imagePath)),
 	))
 	r.Methods("GET").PathPrefix(os.Getenv("BASE_URI") + "/health").Handler(httptransport.NewServer(
